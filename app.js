@@ -21,7 +21,7 @@ nconf.env().file({file: 'config/private.json'});
 passport.use(new BnetStrategy({
                      clientID: nconf.get('bnet_key'),
                      clientSecret: nconf.get('bnet_secret'),
-                     callbackURL: "http://localhost:3000/auth/bnet/callback"
+                     callbackURL: nconf.get('bnet_callback')
                  }, function(accessToken, refreshToken, profile, done) {
                      return done(null, profile);
                  }));
