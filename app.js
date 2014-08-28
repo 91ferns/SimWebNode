@@ -7,6 +7,24 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var authentication = require('./routes/authentication');
+
+var BnetStrategy = require('passport-bnet').Strategy;
+var passport = require('passport');
+
+//NConf
+
+var nconf = require('nconf');
+nconf.env().file({file: 'config/private.json'});
+
+// Use the BnetStrategy within Passport.
+passport.use(new BnetStrategy({
+                     clientID: nconf.get('bnet_key'),
+                     clientSecret: nconf.get('bnet_secret'),
+                     callbackURL: "http://localhost:3000/auth/bnet/callback"
+                 }, function(accessToken, refreshToken, profile, done) {
+                     return done(null, profile);
+                 }));
 
 var app = express();
 
@@ -22,8 +40,15 @@ app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Initialize Passport!  Also use passport.session() middleware, to support
+// persistent login sessions (recommended).
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 app.use('/', routes);
 app.use('/users', users);
+app.use('/auth', authentication);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
