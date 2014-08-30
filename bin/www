@@ -6,16 +6,16 @@ var http = require('http');
 
 var fs = require('fs');
 
-var privateKey = fs.readFileSync('config/private/server.key');
-var certificate = fs.readFileSync('config/private/server.crt');
+//var privateKey = fs.readFileSync('config/private/server.key');
+//var certificate = fs.readFileSync('config/private/server.crt');
 
-app.set('port', process.env.PORT || 443);
+app.set('port', process.env.PORT || 8000);
 
-if (true) {
-  http.createServer(app).listen(80);
+if (false) {
+  http.createServer(app).listen(app.get('port'));
   https.createServer({key: privateKey, cert: certificate}, app).listen(443);
 } else {
-  var server = app.listen(app.get('port'), function() {
+  var server = app.listen(8001, function() {
     debug('Express server listening on port ' + server.address().port);
   });
 

@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1 Sim My Character
+  if user
+    p Welcome to #{title}, #{user}
+  else
+    p Welcome to #{title}
+
+  form(action="javascript:void(0);",method="get")
+    select(name="region")
+       option(value="us") US
+    label Realm
+       input(name="realm")
+    label Name
+       input(name="name",placeholder="Donpain")
+    button(type="submit") Sim
+
+  div(ng-controller="SimulationController")
+    p DPS:
+      span {{DPS}}
