@@ -1,5 +1,4 @@
 var express = require('express');
-var simc = require('../engine/build/Release/simc');
 
 var router = express.Router();
 
@@ -20,11 +19,6 @@ router.get('/sim', function(req, res) {
 });
 
 router.get('/sim/do', function(req,res) {
-  simc.run({
-    "armory": req.query.region + "," + req.query.realm + "," + req.query.name
-  }, function (data) {
-    res.end(JSON.stringify(data));
-  });
   console.log('hey');
 });
 
